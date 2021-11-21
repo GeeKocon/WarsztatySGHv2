@@ -2,21 +2,26 @@ package com.skni.warsztatysghv2.registration;
 
 import org.springframework.stereotype.Component;
 
+import java.io.FileNotFoundException;
+
 @Component
 public class StudentService {
 
     private final UUIDStudentIdGenerator studentIdGenerator;
     private final StatusService statusService;
     private final ApplicationFormService applicationFormService;
-
-    public StudentService(UUIDStudentIdGenerator studentIdGenerator, StatusService statusService, ApplicationFormService applicationFormService) {
+    private final FileSaver fileSaver;
+    public StudentService(UUIDStudentIdGenerator studentIdGenerator, StatusService statusService, ApplicationFormService applicationFormService,FileSaver fileSaver) {
         this.studentIdGenerator = studentIdGenerator;
         this.statusService = statusService;
         this.applicationFormService = applicationFormService;
+        this.fileSaver = fileSaver;
     }
 
-    public void printStudent() {
+    public void printStudent() throws FileNotFoundException {
         Student student = create(applicationFormService.createMock());
+
+        fileSaver.saveToFile(student);
         System.out.println(student);
     }
 
